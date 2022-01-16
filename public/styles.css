@@ -1,0 +1,10 @@
+body {
+    background-color: #f5f6f7;
+    margin-top: 3%;
+  
+}
+.picture {
+    display: block;
+    max-width:800px;
+    height: auto;
+}
