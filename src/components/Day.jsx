@@ -1,28 +1,23 @@
 import React from "react";
-import TextField from '@mui/material/TextField';
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import DatePicker from '@mui/lab/DatePicker';
-
-
+import TextField from "@mui/material/TextField";
+import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import LocalizationProvider from "@mui/lab/LocalizationProvider";
+import DatePicker from "@mui/lab/DatePicker";
 
 function Day(props) {
-    return (
-      <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <DatePicker
-
-          label="Choose a date"
-          value={props.selectedDay}
-          maxDate = {new Date()}
-          onChange={(date) => {
-          props.onChangeDay(date);}}
-          renderInput={(params) => (
-
-            <TextField {...params} />
-        )}
+  return (
+    <LocalizationProvider dateAdapter={AdapterDateFns}>
+      <DatePicker
+        label="Choose a date"
+        value={props.selectedDay}
+        maxDate={new Date()}
+        onChange={(date) => {
+          props.onChangeDay(date);
+        }}
+        renderInput={(params) => <TextField {...params} />}
       />
-      </LocalizationProvider>
-      );}
+    </LocalizationProvider>
+  );
+}
 
 export default Day;
-
