@@ -15,7 +15,3 @@ function Header() {
 }
 export default Header;
 
-//<div>
-//<h1>Spacestagram</h1>
-//<h2>Astronomy Picture of the Day</h2>
-//   </div>

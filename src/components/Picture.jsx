@@ -11,59 +11,78 @@ import {
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { red } from "@mui/material/colors";
 
-const Picture = (props) => {
-  const [color, setColor] = useState(false);
+const apiKey = "YI2hDKwxKEcKWVwcHmrD9lLnnWC3UWHSqUmUcAs9";
 
+export const formatDate = (selectedDay) => {
+  return moment(selectedDay).format("YYYY-MM-DD");
+};
+
+export const getUrl = (apiKey, formattedDate) => {
+  return `https://api.nasa.gov/planetary/apod?api_key=${apiKey}&date=${formattedDate}`;
+};
+
+function Picture(props) {
+  const formattedDate = formatDate(props.selectedDay);
+  const [isLiked, setIsLiked] = useState(false);
   const [fullPictureInfo, setFullPictureInfo] = useState({});
+  const [isDoubleClicked, setIsDoubleClicked] = useState(false);
+  const url = getUrl(apiKey, formattedDate);
 
-  const strDay = moment(props.selectedDay).format("YYYY-MM-DD");
-  const baseUrl =
-    "https://api.nasa.gov/planetary/apod?api_key=YI2hDKwxKEcKWVwcHmrD9lLnnWC3UWHSqUmUcAs9&date=" +
-    strDay;
+  const handleDoubleClick = () => {
+    setIsDoubleClicked(true);
+    setTimeout(() => setIsDoubleClicked(false), 1500);
+    handleColorChange();
+  };
 
+  // Fetching data from NASA API
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(baseUrl);
+        const response = await fetch(url);
         const json = await response.json();
-        console.log(json);
         setFullPictureInfo(json);
       } catch (error) {
         console.log("error", error);
       }
     };
-
     fetchData();
-  }, [strDay]);
+  }, [url]);
 
+  // Checking if Local Storage has data of isLiked.
+  // If it does - passing the value to the state of isLiked.
   useEffect(() => {
-    const data = localStorage.getItem(strDay);
+    const data = localStorage.getItem(formattedDate);
     if (data) {
-      setColor(JSON.parse(data));
+      setIsLiked(JSON.parse(data));
     } else {
-      setColor(false);
+      setIsLiked(false);
     }
-    console.log("get item" + strDay);
-  }, [strDay]);
+  }, [formattedDate]);
 
+  // When state of isLiked changes, rewriting it into Local Storage.
   useEffect(() => {
-    localStorage.setItem(strDay, JSON.stringify(color));
-    console.log("set item" + strDay);
-  }, [color]);
+    localStorage.setItem(formattedDate, JSON.stringify(isLiked));
+  }, [isLiked]);
 
-  function colorChange() {
-    setColor(!color);
-  }
+  const handleColorChange = () => {
+    setIsLiked(!isLiked);
+  };
 
   return (
     <Card sx={({ maxWidth: 500 }, { boxShadow: 3 })}>
-      <CardMedia
-        onDoubleClick={colorChange}
-        sx={fullPictureInfo.media_type === "video" ? { height: 450 } : null}
-        component={fullPictureInfo.media_type === "image" ? "img" : "iframe"}
-        image={fullPictureInfo.url}
-        alt={fullPictureInfo.title}
-      />
+      <div className="like-container">
+        <div className={isDoubleClicked ? "like" : "not-display-like"}>
+          <FavoriteIcon fontSize="large" />
+        </div>
+
+        <CardMedia
+          onDoubleClick={handleDoubleClick}
+          sx={fullPictureInfo.media_type === "video" ? { height: 450 } : null}
+          component={fullPictureInfo.media_type === "image" ? "img" : "iframe"}
+          image={fullPictureInfo.url}
+          alt={fullPictureInfo.title}
+        />
+      </div>
       <CardContent>
         <Typography
           gutterBottom
@@ -73,12 +92,7 @@ const Picture = (props) => {
         >
           {fullPictureInfo.title}
         </Typography>
-        <Typography
-          gutterBottom
-          variant="h5"
-          component="div"
-          sx={{ fontSize: "1.4em" }}
-        >
+        <Typography gutterBottom variant="h5" sx={{ fontSize: "1.4em" }}>
           {fullPictureInfo.date}
         </Typography>
         <Typography
@@ -90,9 +104,10 @@ const Picture = (props) => {
         </Typography>
         <CardActions sx={{ paddingLeft: 0 }}>
           <IconButton
+            data-testid="like-button"
             aria-label="like"
-            onClick={colorChange}
-            sx={color === true ? { color: red[500] } : null}
+            onClick={handleColorChange}
+            sx={isLiked && { color: "#f44336" }}
           >
             <FavoriteIcon />
           </IconButton>
@@ -100,6 +115,6 @@ const Picture = (props) => {
       </CardContent>
     </Card>
   );
-};
+}
 
 export default Picture;

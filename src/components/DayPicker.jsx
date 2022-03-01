@@ -4,7 +4,9 @@ import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import DatePicker from "@mui/lab/DatePicker";
 
-function Day(props) {
+
+
+function DayPicker(props) {
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <DatePicker
@@ -20,4 +22,4 @@ function Day(props) {
   );
 }
 
-export default Day;
+export default DayPicker;
