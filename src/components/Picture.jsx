@@ -9,7 +9,6 @@ import {
   CardActions,
 } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import { red } from "@mui/material/colors";
 
 const apiKey = "YI2hDKwxKEcKWVwcHmrD9lLnnWC3UWHSqUmUcAs9";
 
@@ -107,7 +106,7 @@ function Picture(props) {
             data-testid="like-button"
             aria-label="like"
             onClick={handleColorChange}
-            sx={isLiked && { color: "#f44336" }}
+            sx={{ color: isLiked && "#f44336" }}
           >
             <FavoriteIcon />
           </IconButton>
