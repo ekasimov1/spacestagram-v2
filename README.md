@@ -7,7 +7,7 @@ You also can like or unlike pictures. The App will remember your likes even afte
 
 *This App was built as Front End Developer Intern Challenge - Summer 2022.
 
-<a href="https://romantic-franklin-f8be37.netlify.app/">Open Spacestagram App</a>
+<a href="https://romantic-franklin-f8be37.netlify.app/">Live Demo</a>
 
 #Updates
 - Animated like effect on doubleclick
